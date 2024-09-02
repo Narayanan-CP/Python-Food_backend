@@ -1,5 +1,6 @@
 from Models.User import User
 from Models.UserManager import UserManager
+import re
 
 
 class LoginSystem:
@@ -14,26 +15,40 @@ class LoginSystem:
         
         
     def Register(self):
-        name=input("Name:  ")
-        mobile=int(input("Mobile No:  "))
-        mailid=input("Email Id:  ")
-        password=input("Password:  ")
-        user=User(name,mobile,mailid,password)
-        UserManager.AddUser(user)
+        while True:
+            name = input("Name: ")
+            if not name.isalpha():
+                print("Name should only contain letters.")
+                continue
+            
+            # Validate Mobile Number
+            mobile = input("Mobile No: ").strip()
+            if not (mobile.isdigit() and len(mobile) == 10):
+                print("Mobile number should be exactly 10 digits.")
+                continue
+            
+            # Validate Email ID
+            mailid = input("Email Id: ").strip()
+            if not (re.match(r"[^@]+@[^@]+\.[^@]+", mailid)):
+                print("Invalid email address.")
+                continue
+            
+            # Validate Password
+            password = input("Password: ").strip()
+            if len(password) < 6:
+                print("Password should be at least 6 characters long.")
+                continue
+
     def GuestLogin(self):
-        pass  
+        pass
+    def Exit():
+        print("Thank you for using our food App!!!")
+        exit()
+        
+          
     def ValidateOption(self,option):
-        if option==1:
-            self.Login()
-        elif option==2:
-            self.Register()
-        elif option==3:
-            self.GuestLogin()
-        elif option==4:
-            print("Thank you for using our food App!!!")
-            exit()
-        else:
-            print("Invalid Choice...Please retry")    
+        #it is a attribute which calls the option we are using() because it acts as a method
+        getattr(self,option)()
                           
     
     
@@ -49,7 +64,7 @@ class FoodApp:
             print() 
             try:   
                 choice=int(input("Enter your Choice:")) 
-                loginSystem.ValidateOption(choice)
-            except ValueError:
+                loginSystem.ValidateOption(FoodApp.LoginOptions[choice])
+            except (ValueError,KeyError):
                 print("Invalid input.. please Enter the valid Choice")    
          

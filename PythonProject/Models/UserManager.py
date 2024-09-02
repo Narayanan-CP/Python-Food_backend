@@ -5,7 +5,7 @@ class UserManager:
     def AddUser(cls,userObj):
         if isinstance(userObj,User):
             cls.__Users.append(userObj)
-            print("You have been Succeddfully registered")
+            print("You have been Successfully registered")
         else:
             print("Invalid User")
     @classmethod
